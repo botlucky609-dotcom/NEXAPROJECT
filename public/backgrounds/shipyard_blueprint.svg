@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020814"/>
+      <stop offset="50%" stop-color="#08182f"/>
+      <stop offset="100%" stop-color="#040c1a"/>
+    </linearGradient>
+    <pattern id="smallGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e3a5f" stroke-width="0.7" opacity="0.35"/>
+    </pattern>
+    <pattern id="majorGrid" width="200" height="200" patternUnits="userSpaceOnUse">
+      <rect width="200" height="200" fill="url(#smallGrid)"/>
+      <path d="M 200 0 L 0 0 0 200" fill="none" stroke="#3b82f6" stroke-width="1.2" opacity="0.45"/>
+    </pattern>
+    <linearGradient id="hullLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#60a5fa" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#2563eb" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Blueprint Background -->
+  <rect width="100%" height="100%" fill="url(#bgGrad)"/>
+  <rect width="100%" height="100%" fill="url(#majorGrid)"/>
+
+  <!-- Technical Vessel Lines & CAD Schematics -->
+  <g opacity="0.45" stroke="#38bdf8" stroke-width="1.5" fill="none">
+    <!-- Keel Line -->
+    <path d="M 150 780 L 1750 780" stroke-dasharray="10 5" stroke-width="2"/>
+    <text x="180" y="810" fill="#38bdf8" font-family="monospace" font-size="14" letter-spacing="3">BASELINE / KEEL LEVEL EL+0.000</text>
+    <text x="1450" y="810" fill="#38bdf8" font-family="monospace" font-size="14" letter-spacing="3">DWL DW+8.450M</text>
+
+    <!-- Vessel Profile Curves -->
+    <path d="M 200 480 Q 400 780 750 780 L 1550 780 Q 1720 780 1780 420 L 1650 420 L 1500 520 L 300 520 Z" stroke="url(#hullLine)" stroke-width="2.5"/>
+    <path d="M 250 480 Q 420 720 720 720 L 1500 720 Q 1650 720 1710 450" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="6 4"/>
+    
+    <!-- Waterline Ribs / Frames -->
+    <path d="M 350 480 L 350 780 M 500 480 L 500 780 M 650 480 L 650 780 M 800 480 L 800 780 M 950 480 L 950 780 M 1100 480 L 1100 780 M 1250 480 L 1250 780 M 1400 480 L 1400 780 M 1550 480 L 1550 780" stroke="#1d4ed8" stroke-width="1" stroke-dasharray="4 6"/>
+    
+    <!-- Bulkhead Cross Sections -->
+    <circle cx="950" cy="630" r="140" stroke="#0ea5e9" stroke-width="1" stroke-dasharray="3 3"/>
+    <circle cx="950" cy="630" r="80" stroke="#0ea5e9" stroke-width="0.8"/>
+    <line x1="950" y1="450" x2="950" y2="810" stroke="#38bdf8" stroke-width="1.5"/>
+    <line x1="770" y1="630" x2="1130" y2="630" stroke="#38bdf8" stroke-width="1.5"/>
+
+    <!-- Dimension Annotations -->
+    <g font-family="monospace" font-size="12" fill="#93c5fd">
+      <text x="960" y="470">FR-124 [MIDSHIP SECTION]</text>
+      <text x="360" y="470">FR-32 [BULBOUS BOW]</text>
+      <text x="1560" y="470">FR-210 [TRANSOM STERN]</text>
+      <text x="200" y="200" font-size="20" font-weight="bold" fill="#60a5fa">NEXA NAVAL ARCHITECTURE // HULL BLUEPRINT SPEC-04</text>
+      <text x="200" y="230" fill="#38bdf8">LOA: 188.50 M | LBP: 176.00 M | BREADTH: 32.20 M | DRAFT: 12.00 M</text>
+    </g>
+  </g>
+</svg>

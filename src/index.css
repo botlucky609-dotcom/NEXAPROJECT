@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Brightness Theme Variants */
+/* Terang (Light Mode) */
+body.theme-terang {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Gelap (Dark Mode) */
+body.theme-gelap {
+  background-color: #090d16;
+  color: #f1f5f9;
+}
+
+/* Redup (Muted Eye-Care Ambient Mode) */
+body.theme-redup {
+  background-color: #171d26;
+  color: #cbd5e1;
+}
+
+/* Font Family Variants */
+body.font-plus-jakarta { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important; }
+body.font-inter { font-family: 'Inter', system-ui, -apple-system, sans-serif !important; }
+body.font-roboto { font-family: 'Roboto', system-ui, -apple-system, sans-serif !important; }
+body.font-montserrat { font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important; }
+body.font-poppins { font-family: 'Poppins', system-ui, -apple-system, sans-serif !important; }
+body.font-outfit { font-family: 'Outfit', system-ui, -apple-system, sans-serif !important; }
+body.font-jetbrains-mono { font-family: 'JetBrains Mono', monospace !important; }
+
+/* Font Scaling Variants */
+body.font-scale-compact { font-size: 13.5px; }
+body.font-scale-normal { font-size: 14.5px; }
+body.font-scale-large { font-size: 16px; }
+
+/* Hide horizontal scrollbars across app */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Custom subtle scrollbar for vertical containers */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+
+/* Anti-Screenshot Protection Watermark and Blur state when blurred or print invoked */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  body::before {
+    content: "DOKUMEN RAHASIA - DILARANG MENYALIN ATAU MENGAMBIL TANGKAPAN LAYAR (CONFIDENTIAL NEXAPROJECT)";
+    visibility: visible !important;
+    position: fixed;
+    top: 40%;
+    left: 10%;
+    right: 10%;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+  }
+}
+
+.secure-screen-blur {
+  filter: blur(12px) !important;
+  user-select: none !important;
+  pointer-events: none !important;
+}
+
+/* Tabular figures utility */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   GLOBAL CUSTOM SELECT & DROPDOWN STYLING (NEXAPROJECT)
+   1. Removes browser native UI (appearance: none, -webkit-appearance, -moz-appearance)
+   2. Eliminates default browser white/grey box on the right in dark mode
+   3. Custom SVG chevron-down dropdown arrow
+   4. Custom refined focus ring (no browser default blue outline)
+   5. Consistent dark mode & light mode palettes
+   ========================================================================== */
+
+select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  outline: none !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.75rem center !important;
+  background-size: 1rem 1rem !important;
+  padding-right: 2.5rem !important;
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+/* Remove default IE/Edge drop arrow */
+select::-ms-expand {
+  display: none !important;
+}
+
+/* Custom focus ring replacing native browser outline */
+select:focus,
+select:focus-visible {
+  outline: none !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Dark Mode & Eye-Care Ambient Mode consistency */
+.dark select,
+body.theme-gelap select,
+body.theme-redup select {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  border-color: #334155;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+}
+
+.dark select:focus,
+body.theme-gelap select:focus,
+body.theme-redup select:focus,
+.dark select:focus-visible,
+body.theme-gelap select:focus-visible,
+body.theme-redup select:focus-visible {
+  outline: none !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.35) !important;
+}
+
+/* Light mode arrow */
+body.theme-terang select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+}
+
+/* Option tags inside select dropdown */
+select option {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.dark select option,
+body.theme-gelap select option,
+body.theme-redup select option {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+

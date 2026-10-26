@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <defs>
+    <linearGradient id="nightSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="60%" stop-color="#0b1329"/>
+      <stop offset="100%" stop-color="#0f1f3d"/>
+    </linearGradient>
+    <linearGradient id="seaReflect" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#091427"/>
+      <stop offset="100%" stop-color="#020713"/>
+    </linearGradient>
+    <linearGradient id="craneGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#d97706" stop-opacity="0.2"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Night Sky -->
+  <rect width="100%" height="720" fill="url(#nightSky)"/>
+  
+  <!-- Subtle Stars / Grid Dust -->
+  <g fill="#94a3b8" opacity="0.3">
+    <circle cx="150" cy="120" r="1.5"/>
+    <circle cx="320" cy="80" r="1"/>
+    <circle cx="560" cy="190" r="1.2"/>
+    <circle cx="780" cy="90" r="1.5"/>
+    <circle cx="940" cy="140" r="1"/>
+    <circle cx="1180" cy="110" r="1.8"/>
+    <circle cx="1390" cy="220" r="1.2"/>
+    <circle cx="1620" cy="70" r="1.5"/>
+    <circle cx="1780" cy="160" r="1"/>
+  </g>
+
+  <!-- Distant Mountains / Coastline -->
+  <path d="M 0 680 Q 450 630 900 660 T 1920 650 L 1920 720 L 0 720 Z" fill="#050c18"/>
+
+  <!-- Dockside Water & Reflection -->
+  <rect y="720" width="100%" height="360" fill="url(#seaReflect)"/>
+  <line x1="0" y1="720" x2="1920" y2="720" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Giant Shipyard Gantry Cranes Silhouette (Goliat Crane) -->
+  <!-- Crane 1 (Left Major Crane) -->
+  <g stroke="#0f172a" fill="#0a0f1d" stroke-width="2">
+    <!-- Crane Legs -->
+    <polygon points="180,720 220,720 340,320 310,320"/>
+    <polygon points="560,720 520,720 400,320 430,320"/>
+    <!-- Cross Struts -->
+    <line x1="260" y1="520" x2="480" y2="520" stroke="#1e293b" stroke-width="4"/>
+    <line x1="230" y1="620" x2="510" y2="620" stroke="#1e293b" stroke-width="4"/>
+    <line x1="290" y1="420" x2="450" y2="420" stroke="#1e293b" stroke-width="4"/>
+    <!-- Main Horizontal Girder Beam -->
+    <rect x="120" y="270" width="620" height="50" fill="#0f172a" rx="4"/>
+    <rect x="140" y="240" width="300" height="30" fill="#0a0f1d"/>
+    <!-- Warning Light on Crane Top -->
+    <circle cx="730" cy="270" r="4" fill="#ef4444" filter="url(#glow)"/>
+    <circle cx="130" cy="270" r="4" fill="#ef4444" filter="url(#glow)"/>
+    <!-- Floodlights illuminating dry dock below -->
+    <polygon points="360,320 250,720 490,720" fill="url(#craneGlow)" opacity="0.3"/>
+  </g>
+
+  <!-- Crane 2 (Right Background Crane) -->
+  <g stroke="#0a0f1d" fill="#070c18" stroke-width="1.5" opacity="0.85">
+    <polygon points="1350,720 1380,720 1460,400 1440,400"/>
+    <polygon points="1650,720 1620,720 1540,400 1560,400"/>
+    <rect x="1300" y="360" width="450" height="40" fill="#0d1527"/>
+    <circle cx="1740" cy="360" r="3" fill="#f59e0b" filter="url(#glow)"/>
+    <polygon points="1500,400 1420,720 1600,720" fill="url(#craneGlow)" opacity="0.2"/>
+  </g>
+
+  <!-- Ship in Drydock (Middle Silhouette) -->
+  <path d="M 680 720 L 720 540 Q 820 480 1200 480 L 1320 460 L 1330 540 L 1280 720 Z" fill="#080e1b"/>
+  <!-- Ship superstructure & mast -->
+  <rect x="1100" y="400" width="120" height="80" fill="#0a1222"/>
+  <rect x="1130" y="340" width="60" height="60" fill="#070d18"/>
+  <line x1="1160" y1="340" x2="1160" y2="280" stroke="#38bdf8" stroke-width="2"/>
+  <circle cx="1160" cy="280" r="3" fill="#38bdf8" filter="url(#glow)"/>
+
+  <!-- Water Reflections -->
+  <ellipse cx="370" cy="740" rx="100" ry="8" fill="#f59e0b" opacity="0.15" filter="url(#glow)"/>
+  <ellipse cx="1510" cy="735" rx="80" ry="6" fill="#f59e0b" opacity="0.1" filter="url(#glow)"/>
+  <ellipse cx="1160" cy="730" rx="60" ry="4" fill="#38bdf8" opacity="0.2" filter="url(#glow)"/>
+</svg>

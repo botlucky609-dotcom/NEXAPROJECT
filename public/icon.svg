@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a" />
+      <stop offset="50%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#93c5fd" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Background Base with Rounded Corners -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Subtle Blueprint Grid lines -->
+  <path d="M 64 256 H 448 M 256 64 V 448 M 128 128 H 384 M 128 384 H 384" stroke="rgba(255,255,255,0.08)" stroke-width="4" stroke-dasharray="8 8" />
+
+  <!-- Ship Hull & Maritime Anchor Element in Background -->
+  <path d="M 128 350 C 180 390, 332 390, 384 350 L 400 310 C 320 340, 192 340, 112 310 Z" fill="rgba(255,255,255,0.15)" />
+
+  <!-- Prominent Letter "N" Lettermark with Sharp Enterprise Cut -->
+  <g filter="url(#shadow)">
+    <!-- Left vertical bar -->
+    <path d="M 144 140 L 196 140 L 196 372 L 144 372 Z" fill="url(#accentGrad)" />
+    <!-- Diagonal bar -->
+    <path d="M 196 140 L 316 330 L 316 372 L 264 372 L 144 182 L 144 140 Z" fill="#ffffff" />
+    <!-- Right vertical bar -->
+    <path d="M 316 140 L 368 140 L 368 372 L 316 372 Z" fill="url(#accentGrad)" />
+  </g>
+
+  <!-- Maritime Compass / Star Dot -->
+  <circle cx="368" cy="140" r="14" fill="#38bdf8" />
+  <circle cx="144" cy="372" r="14" fill="#38bdf8" />
+</svg>

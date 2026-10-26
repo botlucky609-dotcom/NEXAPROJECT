@@ -1,0 +1,10 @@
+{
+  "name": "NEXAPROJECT - Enterprise Project Management System",
+  "description": "Sistem Manajemen Proyek Enterprise Multi-Platform dengan keamanan tinggi, offline PWA, otentikasi bertingkat, dan kontrol proyek komprehensif.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

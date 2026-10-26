@@ -1,0 +1,400 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account and role credentials in NEXAPROJECT",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 150 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "username": { "type": "string", "maxLength": 30 },
+        "role": { "type": "string", "enum": ["creator", "admin", "staff", "karyawan"] },
+        "status": { "type": "string", "enum": ["active", "pending", "rejected", "blocked"] },
+        "employeeId": { "type": "string", "maxLength": 50 },
+        "position": { "type": "string", "maxLength": 100 },
+        "department": { "type": "string", "maxLength": 100 },
+        "photoUrl": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "fullName", "role", "status"]
+    },
+    "UserPermissionsRecord": {
+      "title": "UserPermissionsRecord",
+      "description": "Custom module-level permission overrides for approved users",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "username": { "type": "string", "maxLength": 50 },
+        "role": { "type": "string", "enum": ["creator", "admin", "staff", "karyawan"] },
+        "updatedAt": { "type": "number" },
+        "updatedBy": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["userId", "username", "role", "updatedAt", "updatedBy"]
+    },
+    "WaitlistApplicant": {
+      "title": "WaitlistApplicant",
+      "description": "Applicant waiting for Creator/Admin approval",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "username": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 150 },
+        "status": { "type": "string", "enum": ["pending", "rejected", "approved"] },
+        "rejectionCount": { "type": "number" },
+        "rejectionReason": { "type": "string", "maxLength": 500 },
+        "appliedAt": { "type": "string" }
+      },
+      "required": ["id", "fullName", "username", "email", "status"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Security and access event log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "number" },
+        "userId": { "type": "string", "maxLength": 128 },
+        "username": { "type": "string", "maxLength": 50 },
+        "role": { "type": "string", "maxLength": 20 },
+        "action": { "type": "string", "maxLength": 100 },
+        "module": { "type": "string", "maxLength": 100 },
+        "details": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["success", "warning", "danger"] }
+      },
+      "required": ["id", "timestamp", "username", "action", "module", "status"]
+    },
+    "Employee": {
+      "title": "Employee",
+      "description": "Comprehensive employee record in shipyard operations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "employeeId": { "type": "string", "maxLength": 50 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "position": { "type": "string", "maxLength": 100 },
+        "joinDate": { "type": "string", "maxLength": 50 },
+        "workShift": { "type": "string", "enum": ["PAGI", "SIANG", "MALAM"] },
+        "workStatus": { "type": "string", "enum": ["AKTIF", "MENUNGGU", "TIDAK AKTIF", "DAFTAR HITAM"] },
+        "department": { "type": "string", "maxLength": 100 },
+        "projectType": { "type": "string", "maxLength": 100 },
+        "workLocation": { "type": "string", "maxLength": 200 },
+        "wage": { "type": "number" },
+        "wageType": { "type": "string", "enum": ["BULAN", "HARI", "JAM"] },
+        "mealAllowance": { "type": "number" },
+        "transportAllowance": { "type": "number" },
+        "gougingAllowance": { "type": "number" },
+        "phone": { "type": "string", "maxLength": 30 },
+        "ktpNumber": { "type": "string", "maxLength": 30 },
+        "kkNumber": { "type": "string", "maxLength": 30 },
+        "npwpNumber": { "type": "string", "maxLength": 50 },
+        "bpjsNumber": { "type": "string", "maxLength": 50 },
+        "bankAccountNumber": { "type": "string", "maxLength": 50 },
+        "bankName": { "type": "string", "maxLength": 100 },
+        "userEmail": { "type": "string", "maxLength": 150 }
+      },
+      "required": ["id", "employeeId", "fullName", "position", "workStatus", "wage"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Commercial ship docking and maintenance project",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "projectCode": { "type": "string", "maxLength": 50 },
+        "shipName": { "type": "string", "maxLength": 150 },
+        "shipType": { "type": "string", "maxLength": 100 },
+        "docking": { "type": "string", "maxLength": 50 },
+        "startDate": { "type": "string", "maxLength": 50 },
+        "endDate": { "type": "string", "maxLength": 50 },
+        "durationDays": { "type": "number" },
+        "status": { "type": "string", "enum": ["SELESAI", "PROSES", "BATAL"] },
+        "picEmployeeId": { "type": "string", "maxLength": 50 },
+        "supervisors": { "type": "string", "maxLength": 200 },
+        "photoUrl": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "projectCode", "shipName", "shipType", "status"]
+    },
+    "WarehouseItem": {
+      "title": "WarehouseItem",
+      "description": "Shipyard warehouse material and consumable stock",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "itemCode": { "type": "string", "maxLength": 50 },
+        "itemName": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "maxLength": 50 },
+        "specification": { "type": "string", "maxLength": 200 },
+        "unit": { "type": "string", "maxLength": 30 },
+        "stockQty": { "type": "number" },
+        "minStockQty": { "type": "number" },
+        "rackLocation": { "type": "string", "maxLength": 100 },
+        "unitPrice": { "type": "number" },
+        "isHighValue": { "type": "boolean" },
+        "lastRestockedAt": { "type": "string" }
+      },
+      "required": ["id", "itemCode", "itemName", "category", "unit", "stockQty", "unitPrice"]
+    },
+    "MaterialOrder": {
+      "title": "MaterialOrder",
+      "description": "Shipyard requisition order for ship project materials",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "orderNumber": { "type": "string", "maxLength": 50 },
+        "projectId": { "type": "string", "maxLength": 50 },
+        "shipName": { "type": "string", "maxLength": 150 },
+        "requesterName": { "type": "string", "maxLength": 150 },
+        "department": { "type": "string", "maxLength": 100 },
+        "totalEstimatedCost": { "type": "number" },
+        "priority": { "type": "string", "enum": ["NORMAL", "URGENT", "EMERGENCY"] },
+        "status": { "type": "string", "enum": ["PENDING", "APPROVED", "IN_PROCUREMENT", "RECEIVED", "REJECTED"] },
+        "isCreatorApprovalRequired": { "type": "boolean" },
+        "approvedBy": { "type": "string", "maxLength": 150 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "orderNumber", "projectId", "shipName", "requesterName", "status", "totalEstimatedCost"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Daily employee attendance and check-in logs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "employeeId": { "type": "string", "maxLength": 50 },
+        "employeeName": { "type": "string", "maxLength": 150 },
+        "date": { "type": "string", "maxLength": 50 },
+        "shift": { "type": "string", "enum": ["PAGI", "SIANG", "MALAM"] },
+        "checkInTime": { "type": "string", "maxLength": 30 },
+        "checkOutTime": { "type": "string", "maxLength": 30 },
+        "status": { "type": "string", "enum": ["HADIR", "TERLAMBAT", "IZIN", "SAKIT", "ALPA"] },
+        "notes": { "type": "string", "maxLength": 300 }
+      },
+      "required": ["id", "employeeId", "employeeName", "date", "status"]
+    },
+    "OvertimeClaim": {
+      "title": "OvertimeClaim",
+      "description": "Shipyard overtime claim submission and approvals",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "employeeId": { "type": "string", "maxLength": 50 },
+        "employeeName": { "type": "string", "maxLength": 150 },
+        "projectId": { "type": "string", "maxLength": 50 },
+        "date": { "type": "string", "maxLength": 50 },
+        "hours": { "type": "number" },
+        "ratePerHour": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "reason": { "type": "string", "maxLength": 300 },
+        "status": { "type": "string", "enum": ["MENUNGGU", "DISETUJUI", "DITOLAK"] },
+        "approvedBy": { "type": "string", "maxLength": 150 }
+      },
+      "required": ["id", "employeeId", "date", "hours", "totalAmount", "status"]
+    },
+    "ShipyardContract": {
+      "title": "ShipyardContract",
+      "description": "Shipyard commercial repair and maintenance contracts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "contractNumber": { "type": "string", "maxLength": 50 },
+        "projectId": { "type": "string", "maxLength": 50 },
+        "clientName": { "type": "string", "maxLength": 150 },
+        "contractValue": { "type": "number" },
+        "status": { "type": "string", "enum": ["DRAFT", "AKTIF", "SELESAI", "DITANGGUHKAN"] },
+        "signedByYard": { "type": "string", "maxLength": 150 },
+        "startDate": { "type": "string", "maxLength": 50 },
+        "endDate": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "contractNumber", "projectId", "contractValue", "status"]
+    },
+    "FinancialExpense": {
+      "title": "FinancialExpense",
+      "description": "Operational expenses, vendor payments, and consumables vouchers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "voucherNumber": { "type": "string", "maxLength": 50 },
+        "category": { "type": "string", "maxLength": 50 },
+        "description": { "type": "string", "maxLength": 300 },
+        "amount": { "type": "number" },
+        "date": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["PENDING", "APPROVED", "REJECTED", "PAID"] },
+        "approvedBy": { "type": "string", "maxLength": 150 }
+      },
+      "required": ["id", "voucherNumber", "amount", "status", "category"]
+    },
+    "ShipyardAnnouncement": {
+      "title": "ShipyardAnnouncement",
+      "description": "Official shipyard bulletins, HSE directives, and broadcast notices",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "maxLength": 50 },
+        "priority": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "URGENT"] },
+        "content": { "type": "string", "maxLength": 2000 },
+        "targetAudience": { "type": "string", "maxLength": 100 },
+        "issuedBy": { "type": "string", "maxLength": 150 },
+        "issuedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "title", "category", "priority", "content", "issuedBy"]
+    },
+    "FieldWorkTask": {
+      "title": "FieldWorkTask",
+      "description": "Field work orders, repair tasks, and QC/NDT inspection assignments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "taskCode": { "type": "string", "maxLength": 50 },
+        "title": { "type": "string", "maxLength": 200 },
+        "projectId": { "type": "string", "maxLength": 50 },
+        "shipName": { "type": "string", "maxLength": 150 },
+        "location": { "type": "string", "maxLength": 100 },
+        "assignedTo": { "type": "string", "maxLength": 150 },
+        "status": { "type": "string", "enum": ["BACKLOG", "IN_PROGRESS", "QC_INSPECTION", "COMPLETED", "ON_HOLD"] },
+        "priority": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+        "progress": { "type": "number" },
+        "dueDate": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "taskCode", "title", "projectId", "status", "priority", "progress"]
+    },
+    "FormTimesheetEntry": {
+      "title": "FormTimesheetEntry",
+      "description": "Form time sheet entries with employee status and duplicate checks",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "employeeId": { "type": "string", "maxLength": 50 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "position": { "type": "string", "maxLength": 100 },
+        "department": { "type": "string", "maxLength": 100 },
+        "date": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "employeeId", "fullName", "position", "date"]
+    },
+    "FormOvertimeEntry": {
+      "title": "FormOvertimeEntry",
+      "description": "Form over time entries with vessel name isolation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "employeeId": { "type": "string", "maxLength": 50 },
+        "position": { "type": "string", "maxLength": 100 },
+        "shipName": { "type": "string", "maxLength": 150 },
+        "date": { "type": "string", "maxLength": 50 },
+        "hours": { "type": "number" }
+      },
+      "required": ["id", "fullName", "employeeId", "position", "shipName", "date", "hours"]
+    },
+    "FormNightShiftEntry": {
+      "title": "FormNightShiftEntry",
+      "description": "Form night shift entries with vessel name isolation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "employeeId": { "type": "string", "maxLength": 50 },
+        "position": { "type": "string", "maxLength": 100 },
+        "shipName": { "type": "string", "maxLength": 150 },
+        "date": { "type": "string", "maxLength": 50 },
+        "hours": { "type": "number" }
+      },
+      "required": ["id", "fullName", "employeeId", "position", "shipName", "date", "hours"]
+    },
+    "MonthlyTimeCalcSheet": {
+      "title": "MonthlyTimeCalcSheet",
+      "description": "Comprehensive monthly inline time calculation sheet with weekend color coding and wage formula",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "employeeId": { "type": "string", "maxLength": 50 },
+        "employeeName": { "type": "string", "maxLength": 150 },
+        "year": { "type": "number" },
+        "month": { "type": "number" }
+      },
+      "required": ["id", "employeeId", "employeeName", "year", "month"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles and access permissions"
+    },
+    "/registration_waitlist/{applicantId}": {
+      "schema": "WaitlistApplicant",
+      "description": "Queue for new user approval"
+    },
+    "/audit_logs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Immutable security and action logs"
+    },
+    "/employees/{employeeDocId}": {
+      "schema": "Employee",
+      "description": "Complete employee workforce records"
+    },
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "Vessel maintenance and engineering projects"
+    },
+    "/warehouse_inventory/{itemId}": {
+      "schema": "WarehouseItem",
+      "description": "Shipyard inventory items and stock levels"
+    },
+    "/material_orders/{orderId}": {
+      "schema": "MaterialOrder",
+      "description": "Material requisition requests and approvals"
+    },
+    "/attendance/{recordId}": {
+      "schema": "AttendanceRecord",
+      "description": "Daily attendance punch-in records"
+    },
+    "/overtime_claims/{claimId}": {
+      "schema": "OvertimeClaim",
+      "description": "Overtime hour claims and supervisor sign-offs"
+    },
+    "/contracts/{contractId}": {
+      "schema": "ShipyardContract",
+      "description": "Ship repair contracts and commercial milestones"
+    },
+    "/financial_expenses/{expenseId}": {
+      "schema": "FinancialExpense",
+      "description": "Shipyard operational costs and vouchers"
+    },
+    "/announcements/{annId}": {
+      "schema": "ShipyardAnnouncement",
+      "description": "HSE safety alerts and official management bulletins"
+    },
+    "/field_tasks/{taskId}": {
+      "schema": "FieldWorkTask",
+      "description": "Ship field engineering work orders and QC sign-offs"
+    },
+    "/form_timesheets/{tsId}": {
+      "schema": "FormTimesheetEntry",
+      "description": "Form time sheet records"
+    },
+    "/form_overtime/{otId}": {
+      "schema": "FormOvertimeEntry",
+      "description": "Form overtime records"
+    },
+    "/form_nightshift/{nsId}": {
+      "schema": "FormNightShiftEntry",
+      "description": "Form night shift records"
+    },
+    "/time_calc_sheets/{sheetId}": {
+      "schema": "MonthlyTimeCalcSheet",
+      "description": "Monthly time calculation records"
+    },
+    "/user_permissions/{userId}": {
+      "schema": "UserPermissionsRecord",
+      "description": "User permission matrix overrides for individual users"
+    },
+    "/system_settings/{settingId}": {
+      "schema": "UserProfile",
+      "description": "Global application branding, theme, and server configuration"
+    }
+  }
+}

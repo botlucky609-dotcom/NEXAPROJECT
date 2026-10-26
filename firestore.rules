@@ -1,0 +1,236 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isCreator() {
+      return isSignedIn() && (
+        request.auth.token.email == 'muhammad.andri0605@gmail.com' || 
+        request.auth.token.email == 'ronalpaman@gmail.com' || 
+        request.auth.token.email == 'creator@nexaproject.com' ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'creator')
+      );
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        isCreator() ||
+        request.auth.token.email == 'admin@nexaproject.com' ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'creator'])
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Users Collection - Pengguna terautentikasi dapat membaca profil mereka sendiri di /users/{userId}
+    // Hanya Admin dan Creator yang berhak mengaktifkan status akun (pending -> active) atau mengubah peran
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if (isSignedIn() && (request.auth.uid == userId || isCreator() || isAdmin()) && (
+        request.resource.data.role != 'creator' || isCreator()
+      )) || isValidId(userId);
+      allow update: if isCreator() || (
+        isAdmin() && 
+        (!exists(/databases/$(database)/documents/users/$(userId)) || get(/databases/$(database)/documents/users/$(userId)).data.role != 'creator') &&
+        (!('role' in request.resource.data) || request.resource.data.role != 'creator')
+      ) || (
+        isSignedIn() && request.auth.uid == userId && 
+        (!('role' in request.resource.data) || request.resource.data.role == resource.data.role) &&
+        (!('status' in request.resource.data) || request.resource.data.status == resource.data.status)
+      );
+      allow delete: if isCreator();
+    }
+
+    // Global System Settings Collection - Dapat dibaca publik/global saat boot agar tidak memicu permission error
+    match /system_settings/{settingId} {
+      allow read: if true;
+      allow write: if isCreator() || isAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isCreator() || isAdmin();
+    }
+
+    // User Permissions Collection - Matriks Izin Akses Pengguna
+    // Admin cannot modify Creator permissions; Creator has full authority
+    match /user_permissions/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isValidId(userId) && (
+        isCreator() || 
+        (!('role' in request.resource.data) || request.resource.data.role != 'creator')
+      );
+    }
+
+    // Registration Waitlist Collection
+    match /registration_waitlist/{applicantId} {
+      allow create: if isValidId(applicantId);
+      allow read, update, delete: if isSignedIn();
+    }
+
+    // Audit Logs Collection - Immutable by non-creators
+    match /audit_logs/{logId} {
+      allow read: if isSignedIn();
+      allow create: if isValidId(logId);
+      allow update, delete: if isCreator();
+    }
+
+    // Employees Collection - Semua user terautentikasi bisa membaca (read); Hanya Admin dan Creator yang berhak menambah, mengubah, atau menghapus
+    // Akun CREATOR dilindungi secara mutlak: tidak dapat disentuh, diubah, dihapus, atau ditetapkan oleh peran bawahan
+    match /employees/{employeeDocId} {
+      allow read: if isSignedIn();
+      allow create: if isAdmin() && (
+        !('accountRole' in request.resource.data) || 
+        request.resource.data.accountRole != 'creator' || 
+        isCreator()
+      );
+      allow update: if isCreator() || (
+        isAdmin() && 
+        (!('accountRole' in resource.data) || resource.data.accountRole != 'creator') &&
+        (!('accountRole' in request.resource.data) || request.resource.data.accountRole != 'creator')
+      );
+      allow delete: if isCreator() || (
+        isAdmin() && 
+        (!('accountRole' in resource.data) || resource.data.accountRole != 'creator')
+      );
+    }
+
+    // Projects Collection
+    match /projects/{projectId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    // Project Costs & Margins - Restricted exclusively to Creator
+    match /project_costs/{costId} {
+      allow read, write: if isCreator();
+    }
+
+    // Warehouse Inventory Collection (Tahap 4)
+    match /warehouse_inventory/{itemId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    // Material Orders Collection (Tahap 4) - High value orders (> 50M) require Creator sign-off
+    match /material_orders/{orderId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (
+        isCreator() || 
+        (!('status' in request.resource.data) || request.resource.data.status != 'APPROVED' || 
+         !('totalEstimatedCost' in resource.data) || resource.data.totalEstimatedCost <= 50000000)
+      );
+      allow delete: if isCreator();
+    }
+
+    // Stock Movements Collection
+    match /stock_movements/{movementId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if isCreator();
+    }
+
+    // Daily Attendance Collection (Tahap 5)
+    match /attendance/{recordId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    // Overtime Claims Collection (Tahap 5)
+    match /overtime_claims/{claimId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isCreator();
+    }
+
+    // Sub Menu 1: Form Time Sheet
+    match /form_timesheets/{tsId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isCreator();
+    }
+
+    // Sub Menu 2: Form Over time
+    match /form_overtime/{otId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isCreator();
+    }
+
+    // Sub Menu 3: Form Night Shift
+    match /form_nightshift/{nsId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isCreator();
+    }
+
+    // Sub Menu 4: Lembar Rekapitulasi Kalkulasi Waktu
+    match /time_calc_sheets/{sheetId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    // Shipyard Commercial Contracts (Tahap 6) - Only Creator can sign official yard value contracts
+    match /contracts/{contractId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && (
+        isCreator() || 
+        (!('signedByYard' in request.resource.data) || request.resource.data.signedByYard != 'MUHAMMAD ANDRI (Creator - Project Director)')
+      );
+      allow delete: if isCreator();
+    }
+
+    // Operational Expenses & Vouchers (Tahap 6) - Expenses > 50M require Creator sign-off
+    match /financial_expenses/{expenseId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (
+        isCreator() || 
+        (!('status' in request.resource.data) || request.resource.data.status != 'APPROVED' || 
+         !('amount' in resource.data) || resource.data.amount <= 50000000)
+      );
+      allow delete: if isCreator();
+    }
+
+    // Announcements & Safety HSE Bulletins (Tahap 7)
+    match /announcements/{annId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (
+        isCreator() || 
+        (!('issuedBy' in resource.data) || !resource.data.issuedBy.matches('.*Creator.*'))
+      );
+      allow delete: if isCreator() || (
+        isSignedIn() && (!('issuedBy' in resource.data) || !resource.data.issuedBy.matches('.*Creator.*'))
+      );
+    }
+
+    // Field Work Tasks & Dispatcher (Tahap 7)
+    match /field_tasks/{taskId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isCreator() || isSignedIn();
+    }
+
+    // Test connection endpoint
+    match /test/connection {
+      allow read, write: if true;
+    }
+  }
+}
+

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>NEXAPROJECT - Enterprise Project Management System</title>
+    <meta name="description" content="Sistem Manajemen Proyek Enterprise Multi-Platform dengan keamanan tinggi, offline PWA, otentikasi bertingkat, dan kontrol proyek komprehensif." />
+    <meta property="og:title" content="NEXAPROJECT - Enterprise Project Management System" />
+    <meta property="og:description" content="Sistem Manajemen Proyek Enterprise Multi-Platform dengan keamanan tinggi, offline PWA, otentikasi bertingkat, dan kontrol proyek komprehensif." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <!-- Mobile & PWA meta -->
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="NEXAPROJECT" />
+    
+    <!-- PWA Manifest & App Icons -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Early beforeinstallprompt Capture & Service Worker Registration -->
+    <script>
+      // Capture beforeinstallprompt immediately on window to prevent race conditions
+      window.__pwaInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', function(event) {
+        event.preventDefault();
+        window.__pwaInstallPrompt = event;
+        window.dispatchEvent(new CustomEvent('pwa-prompt-captured'));
+        console.log('[PWA] beforeinstallprompt event captured and ready.');
+      });
+
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then(function(reg) {
+              console.log('[PWA] Service Worker registered with scope:', reg.scope);
+            })
+            .catch(function(err) {
+              // Try fallback service-worker.js if sw.js registration hits an unexpected error
+              navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+                .then(function(reg) {
+                  console.log('[PWA] Fallback service-worker.js registered:', reg.scope);
+                })
+                .catch(function(fallbackErr) {
+                  console.warn('[PWA] Service Worker registration failed:', fallbackErr);
+                });
+            });
+        });
+      }
+    </script>
+    
+    <!-- Web Fonts: Plus Jakarta Sans, Inter, Roboto, Montserrat, Poppins, Outfit & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="antialiased selection:bg-blue-600 selection:text-white overflow-x-hidden font-sans">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

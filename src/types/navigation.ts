@@ -1,0 +1,59 @@
+export type AppView = 
+  | 'landing'
+  | 'support'
+  | 'login'
+  | 'register'
+  | 'forgot-password'
+  | 'pending-approval'
+  | 'dashboard'
+  | 'announcements'
+  | 'tasks'
+  | 'employees-profile'
+  | 'employees-data'
+  | 'employees-photos'
+  | 'projects-list'
+  | 'projects-supervisors'
+  | 'projects-progress'
+  | 'projects-cost'
+  | 'attendance-timesheet'
+  | 'attendance-overtime'
+  | 'attendance-nightshift'
+  | 'attendance-time-calc'
+  | 'attendance-project-calc'
+  | 'attendance-summary'
+  | 'attendance-labor-cost'
+  | 'finance-contract'
+  | 'finance-claim-ot'
+  | 'finance-claim-night'
+  | 'finance-labor'
+  | 'finance-material'
+  | 'finance-operational'
+  | 'finance-other'
+  | 'warehouse-usage'
+  | 'warehouse-order'
+  | 'warehouse-flow'
+  | 'warehouse-stock'
+  | 'warehouse-storage'
+  | 'settings-general'
+  | 'settings-app'
+  | 'settings-theme'
+  | 'settings-templates'
+  | 'settings-audit'
+  | 'settings-about'
+  | 'users-access'
+  | 'users-permissions'
+  | 'users-waitlist';
+
+export interface NavigationItem {
+  id: string;
+  titleId: string;
+  titleEn: string;
+  iconName: string;
+  defaultView: AppView;
+  subMenus?: {
+    id: string;
+    view: AppView;
+    titleId: string;
+    titleEn: string;
+  }[];
+}
